@@ -30,8 +30,6 @@ type Client struct {
 	UseCookies bool
 }
 
-type APIResponse http.Response
-
 func NewClient(host, username, password string, sslVerify, useCookies bool) *Client {
 
 	var (
