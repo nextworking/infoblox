@@ -50,3 +50,31 @@ func (c *Client) GetRecordHost(ref string, opts *Options) (*RecordHostObject, er
 	}
 	return &out, nil
 }
+
+func (c *Client) FindRecordHost(name string, view string) ([]RecordHostObject, error) {
+	// FindRecordHost searches the Infoblox WAPI for the HOST record with the given
+	field := "name"
+	viewName := "view"
+	// conditions := []Condition{Condition{Field: &field, Value: name}}
+	conditions := []Condition{
+		Condition{
+			Field: &field,
+			Value: name,
+		},
+		Condition{
+			Field: &viewName,
+			Value: view,
+		},
+	}
+	resp, err := c.RecordHost().find(conditions, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var out []RecordHostObject
+	err = resp.Parse(&out)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
